@@ -1,0 +1,39 @@
+<div class="create-user">
+    <h2>Administration</h2>
+    <h3>Création d'un utilisateur</h3>
+    <form action="" class="form" method="get">
+        <div class="name">
+            <input type="name" autocomplete="off" name="name" [(ngModel)]="registration.name"
+                placeholder="Entrer un nom">
+        </div>
+        <div class="firstname">
+            <input type="firstname" autocomplete="off" name="firstname" [(ngModel)]="registration.firstname"
+                placeholder="Entrer un prénom">
+        </div>
+        <div class="pseudo">
+            <input type="pseudo" autocomplete="off" name="username" [(ngModel)]="registration.username"
+                placeholder="Entrer un pseudo">
+        </div>
+        <div class="email">
+            <input type="email" autocomplete="off" name="email" [(ngModel)]="registration.email"
+                placeholder="Entrer une adresse e-mail">
+        </div>
+        <div class="password">
+            <input type="password" autocomplete="off" name="password" [(ngModel)]="registration.password"
+                placeholder="Entrer un mot de passe">
+        </div>
+        <div class="role">
+            <select type="role" name="role" [(ngModel)]="registration.role">
+                <option value="">Choissisez un rôle</option>
+                <option name="admin" value="15vfdgr">Administrateur</option>
+                <option name="user" value="f454f6re">Utilisateur</option>
+            </select>
+        </div>
+        <button type="submit" (click)="submit()">Enregistrer</button>
+        <br>
+        <div *ngIf="message" class="alert alert-success" role="alert">
+            {{ message }}
+          </div>
+    </form>
+</div>
+  

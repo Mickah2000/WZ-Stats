@@ -1,0 +1,25 @@
+<div class="center">
+  <div class="login">
+    <h2>Connexion</h2>
+    <form #f="ngForm" (ngSubmit)="f.form.valid && submit()" class="form" method="POST">
+      <div class="email">
+        <input type="email" autocomplete="off" name="email" [(ngModel)]="user.email" required
+        #email="ngModel"
+          placeholder="Adresse e-mail">
+          <div class="alert alert-danger" role="alert" *ngIf="email.errors && f.submitted">
+            Une adresse email est requise pour se connecter.
+        </div>
+      </div>
+      <div class="password">
+        <input type="password" autocomplete="off" name="password" [(ngModel)]="user.password" required
+        #password="ngModel"
+          placeholder="Mot de passe">
+          <div class="alert alert-danger" role="alert" *ngIf="password.errors && f.submitted">
+            Un mot de passe est requis pour se connecter.
+        </div>
+      </div>
+      <button type="submit" (click)="submit()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+    </form>
+    <p>© WZ-Conseil 2021</p>
+  </div>
+</div>

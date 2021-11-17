@@ -1,0 +1,11 @@
+<header>
+  <nav>
+    <ul>
+      <li type="button" (click)="dashboard()"><img class="logo" src="https://i.imgur.com/GnPzNWI.png" alt="logo"></li>
+    </ul>
+  </nav>
+  <div *ngIf=isLoggedIn()>
+    <button *ngIf=isAdmin() class="admin" (click)="admin()"><i class="fas fa-user-shield"></i> Administration</button>
+    <button class="logout" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+  </div>
+</header>

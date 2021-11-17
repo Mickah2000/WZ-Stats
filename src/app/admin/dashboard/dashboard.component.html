@@ -1,0 +1,251 @@
+<div class="wrapper">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8"></div>
+    <!-- Visitors overview -->
+    <div class="card sm:col-span-2 lg:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+        <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10">
+            <div class="flex flex-col">
+                <div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7">FILTRES</div>
+                <!-- <div class="font-medium text-secondary">Filtre SMS</div> -->
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-10 mr-6">
+            <div class="ml-2">
+                <mat-button-toggle-group class="border-none" value="oneDay"
+                    #visitorsYearSelector="matButtonToggleGroup" (change)="toggleButton($event)">
+                    <mat-button-toggle class="px-1.5 rounded-full overflow-hidden border-none font-medium"
+                        value="oneHour">1
+                        heure
+                    </mat-button-toggle>
+                    <mat-button-toggle class="px-1.5 rounded-full overflow-hidden border-none font-medium"
+                        value="oneDay">1
+                        jour
+                    </mat-button-toggle>
+                    <mat-button-toggle class="px-1.5 rounded-full overflow-hidden border-none font-medium"
+                        value="oneWeek">1
+                        sem
+                    </mat-button-toggle>
+                    <mat-button-toggle class="px-1.5 rounded-full overflow-hidden border-none font-medium"
+                        value="oneMonth">
+                        1 mois
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+
+        <div class="flex flex-row flex-wrap content-start">
+            <div class="1 flex flex-row flex-wrap">
+                <!-- Auto Complete Form -->
+                <div>
+                    <mat-form-field class="m-4" appearance="fill">
+                        <mat-label class="block text-sm font-medium text-gray-700">Recherche TLS</mat-label>
+                        <input type="text" placeholder="Sélectionnez" aria-label="Recherche" matInput
+                            [formControl]="myTlsControl" [matAutocomplete]="auto1">
+                        <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete"
+                            (optionSelected)="selectedClient($event, 'tls_slug')">
+                            <mat-option *ngFor="let option of filteredTlsOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- Auto Complete Form -->
+                <div>
+                    <mat-form-field class="m-4" appearance="fill">
+                        <mat-label class="block text-sm font-medium text-gray-700">Domaine</mat-label>
+                        <input type="text" placeholder="Sélectionnez" aria-label="Recherche" matInput
+                            [formControl]="myDomainControl" [matAutocomplete]="auto2">
+                        <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete"
+                            (optionSelected)="selectedClient($event, 'domain_id')">
+                            <mat-option *ngFor="let option of filteredDomainsOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- Auto Complete Form -->
+                <div>
+                    <mat-form-field class="m-4" appearance="fill">
+                        <mat-label class="block text-sm font-medium text-gray-700">User</mat-label>
+                        <input type="text" placeholder="Sélectionnez" aria-label="Recherche" matInput
+                            [formControl]="myUserControl" [matAutocomplete]="auto3">
+                        <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete"
+                            (optionSelected)="selectedClient($event, 'user_id')">
+                            <mat-option *ngFor="let option of filteredUsersOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div class="2 flex flex-grow"></div> -->
+            <div class="3 flex flex-row">
+                <mat-form-field appearance="fill" class="lg:col-span-6 flex-center m-4" style="min-width: 240px;">
+                    <mat-label class="block text-sm font-medium text-gray-700">Entrer les dates
+                    </mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="myDatepicker"
+                        class="mt-1 relative rounded-md shadow-sm">
+                        <input matStartDate formControlName="start" placeholder="Date">
+                        <input matEndDate formControlName="end" placeholder="Date" (dateChange)="dateChange($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #myDatepicker></mat-date-range-picker>
+
+                    <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Date de
+                        début
+                        invalide
+                    </mat-error>
+                    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Date de fin
+                        invalide
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+        <!-- Visitors overview -->
+        <div
+            class="card sm:col-span-2 lg:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10">
+                <div class="flex flex-col">
+                    <div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7">Stats SMS</div>
+                </div>
+                <div class="flex items-start mt-6 mx-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
+                        <div class="flex flex-col">
+                            <div class="flex items-center">
+                                <div class="font-medium text-secondary leading-5">Succès</div>
+                            </div>
+                            <div class="flex items-start mt-2">
+                                <div class="text-4xl font-bold tracking-tight leading-none">{{
+                                    smsStatsDisplay.nb_success }}</div>
+                                <div class="flex items-center ml-2">
+                                    <div class="ml-1 text-md font-medium text-green-500">{{
+                                        smsStatsDisplay.percent_success}} %</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex items-center">
+                                <div class="font-medium text-secondary leading-5">Echecs</div>
+                            </div>
+                            <div class="flex items-start mt-2">
+                                <div class="text-4xl font-bold tracking-tight leading-none">{{
+                                    smsStatsDisplay.nb_fails }}</div>
+                                <div class="flex items-center ml-2">
+                                    <div class="ml-1 text-md font-medium text-red-500">{{
+                                        smsStatsDisplay.percent_fails}} %</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex flex-col flex-auto">
+                <div *ngIf="_isLoaded">
+                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                        [title]="chartOptions.title"></apx-chart>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- messages by type -->
+        <div
+            class="card sm:col-span-2 lg:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex items-start mt-6 mx-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <div class="font-medium text-secondary leading-5">Sms de type rdv</div>
+                        </div>
+                        <div class="flex items-start mt-2">
+                            <div class="text-4xl font-bold tracking-tight leading-none">{{
+                                smsTypesDisplay.rdv_success }}</div>
+                            <div class="flex items-center ml-2">
+                                <div class="ml-1 text-md font-medium text-blue-500">{{ smsTypesDisplay.percent_rdv
+                                    }} %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <div class="font-medium text-secondary leading-5">Sms de type message</div>
+                        </div>
+                        <div class="flex items-start mt-2">
+                            <div class="text-4xl font-bold tracking-tight leading-none">{{
+                                smsTypesDisplay.msg_success }}</div>
+                            <div class="flex items-center ml-2">
+                                <div class="ml-1 text-md font-medium text-blue-500">{{ smsTypesDisplay.percent_msg
+                                    }} %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <div class="font-medium text-secondary leading-5">Sms de type notification</div>
+                        </div>
+                        <div class="flex items-start mt-2">
+                            <div class="text-4xl font-bold tracking-tight leading-none">{{
+                                smsTypesDisplay.notify_success }}</div>
+                            <div class="flex items-center ml-2">
+                                <div class="ml-1 text-md font-medium text-blue-500">{{
+                                    smsTypesDisplay.percent_notify }} %</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="_isLoaded2" class="flex flex-col flex-auto h-80 mt-3">
+                <apx-chart class="flex-auto w-full h-full" [chart]="chartSmsByItemType.chart"
+                    [colors]="chartSmsByItemType.colors" [dataLabels]="chartSmsByItemType.dataLabels"
+                    [grid]="chartSmsByItemType.grid" [legend]="chartSmsByItemType.legend"
+                    [series]="chartSmsByItemType.series" [fill]="chartSmsByItemType.fill"
+                    [stroke]="chartSmsByItemType.stroke" [tooltip]="chartSmsByItemType.tooltip"
+                    [xaxis]="chartSmsByItemType.xaxis" [yaxis]="chartSmsByItemType.yaxis"></apx-chart>
+            </div>
+        </div>
+
+
+        <!-- smsStatsDisplay -->
+        <div class="card flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6">
+            <div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7">Répartition des sms</div>
+            <div *ngIf="_isLoaded3" class="flex flex-col flex-auto mt-6">
+                <apx-chart class="flex-auto h-full my-10" [chart]="chartSmsStats.chart" [series]="chartSmsStats.series"
+                    [labels]="chartSmsStats.labels" [plotOptions]="chartSmsStats.plotOptions"></apx-chart>
+
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div
+            class="card sm:col-span-2 lg:col-span-3 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex items-start justify-between m-6 mb-0">
+                <div class="text-lg font-medium tracking-tight leading-6 truncate">Carte</div>
+            </div>
+            <div class="flex items-center justify-between mt-1 ml-10 mr-6 sm:mr-10">
+                <div class="ml-2">
+                    <mat-checkbox class="m-4" (change)="setCheckbox($event.checked, 'success')"
+                        [checked]="mapShowOverlays.success">success</mat-checkbox>
+                    <mat-checkbox class="m-4" (change)="setCheckbox($event.checked, 'fails')"
+                        [checked]="mapShowOverlays.fails">errors</mat-checkbox>
+                </div>
+            </div>
+            <div class="flex flex-col flex-auto h-450">
+                <agm-map [latitude]='lat' [longitude]='lng' [mapTypeId]='googleMapType' [zoom]="zoom"
+                    style="height:400px;display:block;">
+                    <agm-overlay *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.long">
+                        <div class="success" [style.visibility]="mapShowOverlays.success ? 'visible' : 'hidden'">{{
+                            m.successCount || 0 }}</div>
+                        <div class="fail" [style.visibility]="mapShowOverlays.fails ? 'visible' : 'hidden'">{{
+                            m.failCount
+                            || 0}}
+                        </div>
+                    </agm-overlay>
+                </agm-map>
+            </div>
+        </div>
+    </div>
+</div>

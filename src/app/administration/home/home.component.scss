@@ -1,0 +1,56 @@
+.home {
+  #createUser {
+    display: block;
+    padding: 10px 50px;
+    margin: 0 3px;
+    border: 1px solid #212529;
+    background-color: #212529;
+    color: #fff;
+    border-radius: 10px;
+  }
+
+  #createUser:hover,
+  #createUser:focus {
+    transition: 0.2s ease-in-out;
+    color: #fff;
+    background-color: #000000;
+  }
+
+  border-radius: 15px;
+  margin: 0px auto 0 auto;
+  max-width: 1000px;
+  width: 100%;
+  background-color: #fff;
+
+  box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%);
+  padding: 4rem 4rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 100;
+    margin: 2rem 0 2rem;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  h3 {
+    font-style: italic;
+    text-decoration: underline;
+    margin-bottom: 2rem;
+  }
+
+  #deleteUser {
+    margin-top: 5px;
+  }
+
+  @media screen and (max-width: 576px){
+    table {
+      width: 576px;
+    }
+
+    .tableau {
+      overflow-y: scroll;
+    }
+  }
+
+}

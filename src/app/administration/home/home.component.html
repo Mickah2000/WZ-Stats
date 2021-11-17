@@ -1,0 +1,33 @@
+<div class="home">
+    <h2>Administration</h2>
+    <button type="button" (click)="createUser()" id="createUser">Créer un utilisateur</button>
+    <br>
+    <div id="deleteUser" *ngIf="message" class="alert alert-danger" role="alert">
+      {{ message }}
+    </div>
+    <div class="tableau">
+    <table class="table table-striped ">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <th scope="row">{{ user.id }}</th>
+            <td class="capitalize">{{ user.name }}</td>
+            <td class="capitalize">{{ user.firstname }}</td>
+            <td class="capitalize">{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <button type="button" (click)="deleteUser(user.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

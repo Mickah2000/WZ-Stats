@@ -1,0 +1,36 @@
+agm-map {
+  height: 450px;
+}
+
+.wrapper {
+  margin-top: 100px;
+}
+
+.success,
+.fail {
+  min-width: 15px;
+  height: 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-align: right;
+  color: white;
+  border-radius: 3px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 1px;
+}
+
+.success {
+  background-color: rgb(0, 143, 251);
+}
+
+.fail {
+  background-color: rgb(252, 127, 3);
+}
+
+.card {
+  margin: 0 1.5em;
+  background-color: #fff;
+}
+
+
