@@ -32,8 +32,9 @@
       padding: 10px 20px;
       background-color: #212529;
       color: #fff;
-      border-radius: 50px;
+      border-radius: 5px;
       margin: 0 auto;
+      text-transform: uppercase;
     }
 
     button:hover,
@@ -63,7 +64,7 @@
   }
 }
 
-p{
+#copyright{
   margin: 30px 0 auto;
   text-transform: uppercase;
   color: #8f8f8fcc;
@@ -72,4 +73,17 @@ p{
 
 i {
   margin: 0px 5px 0px 0px;
+}
+
+#reset-password{
+  margin: 5px 0 0 5px;
+  background-color: transparent;
+  color: #000;
+  padding: 0;
+  text-transform: none;
+}
+
+#reset-password:hover,
+#reset-password:focus {
+  text-decoration: underline;
 }

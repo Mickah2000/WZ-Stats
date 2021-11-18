@@ -19,12 +19,14 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AgmCoreModule } from '@agm/core';
 import { AgmOverlays } from 'agm-overlays';
 import { RouterModule } from '@angular/router';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HeaderComponent
+    HeaderComponent,
+    ResetPasswordComponent
     
   ],
   imports: [

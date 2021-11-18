@@ -3,11 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
+
+  { path: 'reset-password', component: ResetPasswordComponent},
+  
   {
     path: 'admin', loadChildren: () => import('./admin/admin.module')
       .then(m => m.AdminModule), canActivate: [AuthenticationGuard]

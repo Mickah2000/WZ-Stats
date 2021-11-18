@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 
 @Component({
@@ -13,13 +14,17 @@ export class LoginComponent implements OnInit {
     password:''
   }
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   submit() {
     this.authService.login(this.user)
+  }
+
+  resetPassword() {
+    this.router.navigate(['/reset-password'])
   }
 
 }

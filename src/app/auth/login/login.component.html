@@ -14,12 +14,13 @@
         <input type="password" autocomplete="off" name="password" [(ngModel)]="user.password" required
         #password="ngModel"
           placeholder="Mot de passe">
+          <a id="reset-password" type="button" (click)="resetPassword()">Mot de passe oublié ?</a>
           <div class="alert alert-danger" role="alert" *ngIf="password.errors && f.submitted">
             Un mot de passe est requis pour se connecter.
         </div>
       </div>
       <button type="submit" (click)="submit()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
     </form>
-    <p>© WZ-Conseil 2021</p>
+    <p id="copyright">© WZ-Conseil 2021</p>
   </div>
 </div>
