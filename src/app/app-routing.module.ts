@@ -4,13 +4,17 @@ import { LoginComponent } from './auth/login/login.component';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { SendResetMailComponent } from './auth/send-reset-mail/send-reset-mail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
 
-  { path: 'reset-password', component: ResetPasswordComponent},
+  { path: 'reset-password', component: SendResetMailComponent},
+
+  { path: 'resetpassword/:token', component: ResetPasswordComponent},
+
   
   {
     path: 'admin', loadChildren: () => import('./admin/admin.module')

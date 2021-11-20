@@ -20,13 +20,15 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmOverlays } from 'agm-overlays';
 import { RouterModule } from '@angular/router';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { SendResetMailComponent } from './auth/send-reset-mail/send-reset-mail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HeaderComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    SendResetMailComponent
     
   ],
   imports: [

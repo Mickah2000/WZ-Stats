@@ -1,0 +1,12 @@
+<div class="center">
+    <div class="login">
+      <h2>Mot de passe oublié</h2>
+      <form #f="ngForm" class="form" method="POST">
+        <div class="email">
+          <input type="email" autocomplete="off" name="email" [(ngModel)]="user.email" placeholder="Adresse e-mail">
+        </div>
+        <button (click)="submit()"><i class="fas fa-paper-plane"></i> Envoyer la demande</button>
+      </form>
+      <p type="button" (click)="return()"><i class="fas fa-undo"></i>Retour</p>
+    </div>
+  </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,16 +11,28 @@ import { Router } from '@angular/router';
 export class ResetPasswordComponent implements OnInit {
 
   user = {
-    email:''
-  }
+    password:''
+  };
 
-  constructor(private router : Router) { }
+  token: string;
+
+  constructor(
+    private authService : AuthService, 
+    private router : Router,
+    private route: ActivatedRoute,
+    ) { }
 
   ngOnInit(): void {
+
+    this.route.params.subscribe((params: any) => {
+      console.log('params:', params);
+      this.token = params.token;
+    })
   }
 
   submit(){
-    
+    console.log('fonction submit', this.user.password);
+    this.authService.resetPwd(this.token, this.user.password);
   }
 
   return(){

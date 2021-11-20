@@ -12,6 +12,10 @@ interface Credentials {
   password: string
 }
 
+interface sendMail {
+  email: string
+}
+
 interface Register {
   name: string
   firstname: string
@@ -25,8 +29,7 @@ interface Register {
   providedIn: 'root'
 })
 export class AuthService {
-  url = 'http://localhost:9000/auth/login'
-  url2 = 'http://localhost:9000/users'
+  api_url = 'http://localhost:9000/';
 
   isloggedIn: Boolean = false;
   roleAs: string;
@@ -45,7 +48,7 @@ export class AuthService {
 
   login(credentials: Credentials) {
     console.log(credentials)
-    this.http.post<AccessToken>(this.url, credentials).subscribe(
+    this.http.post<AccessToken>(this.api_url + 'auth/login', credentials).subscribe(
       data => {
         const decodedToken = this.helper.decodeToken(data.access_token);
         console.log('a', decodedToken)  
@@ -60,6 +63,16 @@ export class AuthService {
     )
   }
 
+  sendMail(sendMail: sendMail) {
+    console.log(sendMail)
+    this.http.post(this.api_url + 'send-mail', sendMail).subscribe()
+  }
+
+  resetPwd(token: string, password: string) {
+    console.log(password)
+    this.http.patch(this.api_url + 'reset-password', {token: token, password: password}).subscribe()
+  }
+
   who() {
     const token = localStorage.getItem('token')
       let decodedToken = this.helper.decodeToken(token)
@@ -67,7 +80,7 @@ export class AuthService {
   }
 
   register(register: Register) {
-    return this.http.put(this.url2, register)
+    return this.http.put(this.api_url + 'users', register)
   }
 
   isLoggedIn() {
