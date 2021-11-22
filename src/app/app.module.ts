@@ -21,6 +21,7 @@ import { AgmOverlays } from 'agm-overlays';
 import { RouterModule } from '@angular/router';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { SendResetMailComponent } from './auth/send-reset-mail/send-reset-mail.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,12 @@ import { SendResetMailComponent } from './auth/send-reset-mail/send-reset-mail.c
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA5v3rFJCvwy8aaoW-TXhxGmtx_uFfW5mg',
     }),
-    AgmOverlays
+    AgmOverlays,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-left',
+      preventDuplicates: true,
+    }),
 
   ],
   providers: [

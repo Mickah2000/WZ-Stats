@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApexOptions } from 'ng-apexcharts';
 import { map, startWith } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ElasticService } from 'app/services/elastic_api.service';
 import "tailwindcss/tailwind.css"
 
@@ -35,12 +35,12 @@ export type ChartOptions = {
 
 export class DashboardComponent implements OnInit, OnDestroy {
     @ViewChild("chart") chart: ChartComponent;
-    chartOptions: Partial<ApexOptions>;           // 1er graph
-    chartSmsByItemType: Partial<ApexOptions>;    // 2ème graph
-    chartSmsStats: Partial<ApexOptions>;        // 3ème graph
-    _isLoaded: boolean = false;     // 1er graph
-    _isLoaded2: boolean = false;    // 2eme graph
-    _isLoaded3: boolean = false;    // 3eme graph
+    chartOptions: Partial<ApexOptions>;           // 1st graphic
+    chartSmsByItemType: Partial<ApexOptions>;    // 2nd graphic
+    chartSmsStats: Partial<ApexOptions>;        // 3rd graphic
+    _isLoaded: boolean = false;     // 1st graphic
+    _isLoaded2: boolean = false;    // 2nd graphic
+    _isLoaded3: boolean = false;    // 3rd graphic
 
     myDatepicker: any;
     range = new FormGroup({
@@ -138,7 +138,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .then((tlsList) => {
                 console.log('tlsList :', tlsList);
 
-                this.tlsSlugList = tlsList; // ici j'assigne mon résultat à la variable tlsSlugList déclarée dans la classe (donc connue du template)
+                this.tlsSlugList = tlsList;
 
                 // set autocomplete for TLS
                 this.filteredTlsOptions = this.myTlsControl.valueChanges
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Méthode appelée au changement de date range
+     * Method for date range
      * 
      * @param event 
      */
@@ -225,7 +225,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Méthode appelée à la selection d'un TLS dans les suggestions
+     * Method for select TLS
      * 
      * @param event 
      */
@@ -237,25 +237,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         switch (type) {
             case 'tls_slug':
-                this.filter.tls_slug = event.option.value; // Stocke la valeur dans filter
-                // Activer le champ domaine et l'effacer s'il est déjà rempli
+                this.filter.tls_slug = event.option.value; // Stores the value in filter
+
+                // Activate the domain field and delete it if it is already filled
                 this.myDomainControl.reset();
                 this.myDomainControl.enable();
-                // Désactiver le champ user, puisqu'on vient de select un tls (et l'effacer aussi)
+                // Disable the user field, since we just selected a tls (and delete it too)
                 this.myUserControl.reset();
                 this.myUserControl.disable();
-                // Effacer les variables filters qui ne sont pas tls_slug
+                // Delete filter variables that are not tls_slug
                 this.filter.domain_id = '';
                 this.filter.user_id = '';
 
                 // Search Domain_ids
                 this._getList("domain_id")
                     .then((domainIdList) => {
-                        // On transforme les int du array en string
                         domainIdList = domainIdList.map(x => x.toString());
                         console.log('domainIdList :', domainIdList);
 
-                        this.domainIdList = domainIdList; // J'assigne mon résultat à la variable domainIdList déclarée dans la 
+                        this.domainIdList = domainIdList;
 
                         // autocomplete for TLS
                         this.filteredDomainsOptions = this.myDomainControl.valueChanges
@@ -275,7 +275,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 // Users _ids
                 this._getList("user_id")
                     .then((userIdList) => {
-                        // On transforme les int du array en string
                         userIdList = userIdList.map(x => x.toString());
                         console.log('userIdList :', userIdList);
 
@@ -298,7 +297,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 break;
         }
 
-        // Affiche le graphe
         this._searchAndDisplay();
     }
 
@@ -323,7 +321,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         switch (value) {
             case 'oneHour':
                 this.xaxis = {
-                    min: oneHour.getTime(), // getTime() : convertis l'objet Date en timestamp
+                    min: oneHour.getTime(), // getTime() : convert the Date object to a timestamp
                     max: now
                 };
                 break;
@@ -386,7 +384,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     /**
      * Prepare the chart data from the data
      * 
-     * @param smsSuccessData: any
+     * @param smsSuccessData
      */
     private _prepareSmsData(smsSuccessData: any, smsFailData: any, x_axis_range: number[], interval?: string): void {
         console.log('smsSuccessData :', smsSuccessData);
@@ -407,7 +405,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         console.info('interval => ', (interval ? interval : ''));
 
-        // Ci dessous les config et data du graph
+        // The config and data of the graphic
         this.chartOptions = {
             series: [
                 {
@@ -432,7 +430,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         // Checker si on a dézoomé en dehors du range
                         if (xaxis.min < x_axis_range[0] || xaxis.max > x_axis_range[1]) {// si dézoom en dehors le range
                             console.log('on est dans le IF !!');
-                            // on va récupérer les données qu'on a pas avec le nouveau range (x_axis_range)
                             this._searchAndDisplay(xaxis);
                         } else {
                             console.log('on n\'est dans le else !!');
@@ -722,13 +719,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
         // Get the success data
-        this._elasticAPI.search(searchParams) // 1ère requete
+        this._elasticAPI.search(searchParams) // 1st requete
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((smsSuccessData: any) => {    // résultat
+            .subscribe((smsSuccessData: any) => {    // result
 
                 console.log('Success Data :', smsSuccessData);
 
-                // 2ème req pour les fails cette fois
+                // 2nd req for fail sms
                 searchParams.index = "sms.fail";
                 this._elasticAPI.search(searchParams)
                     .pipe(takeUntil(this._unsubscribeAll))
@@ -743,17 +740,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     });
             });
 
-        const searchByItemTypeParams = JSON.parse(JSON.stringify(searchParams)); // Duplique les params précédemment crées
-        searchByItemTypeParams.index = "sms.*"; // Tout dans l'index sms
+        const searchByItemTypeParams = JSON.parse(JSON.stringify(searchParams));
+        searchByItemTypeParams.index = "sms.*"; // All in SMS Index
 
         const save_must = searchParams.body.query.bool.must;
 
-        // 1 objet pour chaque recherche
+        // 1 object for each search
         let searchByRdvTypeParams = JSON.parse(JSON.stringify(searchByItemTypeParams));
         let searchByNotifyTypeParams = JSON.parse(JSON.stringify(searchByItemTypeParams));
         let searchByMsgTypeParams = JSON.parse(JSON.stringify(searchByItemTypeParams));
 
-        // On pousse dans le must le match correspondant
         searchByRdvTypeParams.body.query.bool.must.push({ "match": { "data.related_item_type": "rdv" } });
         searchByNotifyTypeParams.body.query.bool.must.push({ "match": { "data.related_item_type": "notification" } });
         searchByMsgTypeParams.body.query.bool.must.push({ "match": { "data.related_item_type": "msg" } });
@@ -761,21 +757,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log('searchByRdvTypeParams :', searchByRdvTypeParams.body.query.bool.must);
         console.log('searchParams2 :', searchParams);
 
-        // On lance les requêtes pour le graph détaillé
-        this._elasticAPI.search(searchByMsgTypeParams) // 1ère requete
+        this._elasticAPI.search(searchByMsgTypeParams) // 1st requete
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((smsItemsMsg: any) => {    // résultat
+            .subscribe((smsItemsMsg: any) => {    // result
 
                 console.log('smsItemsMsg :', smsItemsMsg.result.body);
 
-                // 2ème req 
+                // 2nd requete 
                 this._elasticAPI.search(searchByRdvTypeParams)
                     .pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((smsItemsRdv: any) => {
 
                         console.log('smsItemsRdv :', smsItemsRdv.result.body);
 
-                        // 3ème req 
+                        // 3rd requete 
                         this._elasticAPI.search(searchByNotifyTypeParams)
                             .pipe(takeUntil(this._unsubscribeAll))
                             .subscribe((smsItemsNotif: any) => {
@@ -836,7 +831,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
                 console.log('Success Map Data :', successMapBucket);
 
-                // #TODO success markers
+                // success markers
                 successMapBucket.forEach(element => {
                     let country = tableConvert.find(obj => {
                         return obj['"Alpha-2 code"'] === element.key;
@@ -856,7 +851,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
                 this.markers = sucessMarkers;
 
-                // Fails req
+                // Fails requete
                 searchMapParams.index = "sms.fail";
                 // Get the fails data by country
                 this._elasticAPI.search(searchMapParams)
@@ -868,23 +863,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
                         // fail markers
                         failMapBucket.forEach(element => {
-                            // On cherche l'objet du pays qui correspond au "Alpha-2 code" dans la table de conversion
+                            // We look for the country object that corresponds to the "Alpha-2 code" in the conversion table
                             let country = tableConvert.find(obj => {
                                 return obj['"Alpha-2 code"'] === element.key;
                             });
 
-                            // On cherche l'index du pays dans le tableau, si = -1 alors c'est qu'il n'y est pas
+                            // We look for the index of the country in the table, if = -1 then it is not there
                             let indexMarker = this.markers.findIndex(obj => obj.countryKey == element.key);
 
                             if (indexMarker !== -1) {
-                                // console.log(element.key + ' existe déjà (Markers)');
-
-                                // s'il existe déjà on ajoute le failCount
                                 this.markers[indexMarker].failCount = element.doc_count;
-                            } else {
-                                // console.log(element.key + ' à créer (Markers)');
-                                
-                                // sinon on pousse dans le tableau
+                            } else {                                
                                 this.markers.push({
                                     country: country["\"Country\""], 
                                     lat: Number(country["\"Latitude (average)\""]), 
@@ -915,7 +904,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         console.info('interval => ', (interval ? interval : ''));
 
-        // Ci dessous les config et data du graph
+        // Config and data from the graph
         this.chartSmsByItemType = {
             series: [
                 {
@@ -989,7 +978,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._isLoaded2 = true;
         console.log('chartSmsByItemType -> ', this.chartSmsByItemType);
 
-        // Ici on prépare l'affichage du 3ème graph (donut)
+        // Here we prepare the display of the 3rd graph (donut)
         this.chartSmsStats = {
             series: [
                 smsItemsRdv.hits.total.value,

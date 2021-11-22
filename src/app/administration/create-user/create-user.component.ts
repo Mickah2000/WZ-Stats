@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from 'app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-user',
@@ -11,40 +12,43 @@ import { AuthService } from 'app/services/auth.service';
 export class CreateUserComponent implements OnInit {
 
   registration = {
-    name:'',
+    name: '',
     firstname: '',
     username: '',
     email: '',
     password: '',
-    role:''
+    role: ''
   }
-  
+
   message: string
 
   helper = new JwtHelperService();
+  messageToDisplay: string;
 
-  constructor(private AuthService: AuthService, private router: Router) { }
+  constructor(private AuthService: AuthService, private router: Router, private toast: ToastrService) { }
 
   ngOnInit(): void {
 
     const token = localStorage.getItem('token')
   }
-  
-  // submit() {
-    //   this.authService.register(this.registration)
-    // }
-    
+
   submit() {
     this.AuthService.register(this.registration).subscribe(
       data => {
         this.message = data['message'];
-        setTimeout(redirect => this.router.navigate(['/administration']), 2000 ) 
+        setTimeout(redirect => this.router.navigate(['/administration']), 2000)
       },
+
       err => {
-        console.log(err) // traitement erreur
+        this.messageToDisplay = "Les champs ne sont pas correctement remplis.";
+
+        this.toast.error('Erreur !', this.messageToDisplay);
+        console.log(err)
       }
     )
   }
+
+
 
 
 }

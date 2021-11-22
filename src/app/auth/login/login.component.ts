@@ -1,6 +1,8 @@
+import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -10,17 +12,39 @@ import { AuthService } from 'app/services/auth.service';
 export class LoginComponent implements OnInit {
 
   user = {
-    email:'',
-    password:''
+    email: '',
+    password: ''
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
+  email: string
+  password: string
+  messageToDisplay: string = null;
+
+  constructor(private authService: AuthService, private router: Router, private toast: ToastrService) { }
 
   ngOnInit(): void {
   }
 
   submit() {
-    this.authService.login(this.user)
+    this.authService.login(this.user, (err, res) => {
+      console.log(err, res);
+      if (err) {
+        console.error(err);
+        // display message
+        this.messageToDisplay = "Erreur de connexion !";
+        this.toast.error('Echec !', 'Erreur de connexion !');
+      } else {
+        // display message
+        this.messageToDisplay = "Vous êtes connecté !";
+        
+        this.toast.success('Succès !', this.messageToDisplay);
+
+        setTimeout(() => {
+          this.router.navigate(['/admin/dashboard'])
+        }, 1000);
+      }
+
+    })
   }
 
   resetPassword() {
@@ -51,11 +75,7 @@ export class LoginComponent implements OnInit {
 //   message = ''
 //   test = true
 
-//   // Vérification si les champ qu'il est bien tout remplie
-//   if (user.email == '' || user.password == '') {
-//       return `<div>Le formulaire n'est pas correctement rempli</div>`
-//       test = false
-//   }
+
 
 
 //   // Le truc qui taille de la bonne longueur que c'est celle que je veut, sa mère.

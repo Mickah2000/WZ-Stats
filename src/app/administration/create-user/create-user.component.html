@@ -1,7 +1,7 @@
 <div class="create-user">
     <h2>Administration</h2>
     <h3>Création d'un utilisateur</h3>
-    <form action="" class="form" method="get">
+    <form class="form" method="get">
         <div class="name">
             <input type="name" autocomplete="off" name="name" [(ngModel)]="registration.name"
                 placeholder="Entrer un nom">
@@ -17,10 +17,6 @@
         <div class="email">
             <input type="email" autocomplete="off" name="email" [(ngModel)]="registration.email"
                 placeholder="Entrer une adresse e-mail">
-        </div>
-        <div class="password">
-            <input type="password" autocomplete="off" name="password" [(ngModel)]="registration.password"
-                placeholder="Entrer un mot de passe">
         </div>
         <div class="role">
             <select type="role" name="role" [(ngModel)]="registration.role">

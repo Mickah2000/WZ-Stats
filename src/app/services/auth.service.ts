@@ -46,7 +46,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router:Router) { }
 
-  login(credentials: Credentials) {
+  login(credentials: Credentials, cb) {
     console.log(credentials)
     this.http.post<AccessToken>(this.api_url + 'auth/login', credentials).subscribe(
       data => {
@@ -57,9 +57,12 @@ export class AuthService {
         this.user.username = decodedToken.username
         
         localStorage.setItem('token', data.access_token)
-        this.router.navigate(['/admin/dashboard'])
+        cb(null, data);
       },
-      err => console.log(err)
+      err => {
+        console.error(err);        
+        cb(err, null);
+      }
     )
   }
 
@@ -68,9 +71,28 @@ export class AuthService {
     this.http.post(this.api_url + 'send-mail', sendMail).subscribe()
   }
 
-  resetPwd(token: string, password: string) {
-    console.log(password)
-    this.http.patch(this.api_url + 'reset-password', {token: token, password: password}).subscribe()
+  // async resetPwd(token: string, password: string): Promise<any> {
+  //   console.log(password)
+  //   this.http.patch(this.api_url + 'reset-password', {token: token, password: password}).subscribe(
+  //   {
+  //     next: (
+  //       res => {
+  //       console.log(res);
+  //       Promise.resolve(res);
+  //     }),
+  //     error (msg) {
+  //       console.log('err:', msg);
+  //       return Promise.reject(msg);
+  //     }
+  //   }
+  //   )
+  // }
+
+  resetPwd2 (token: string, password: string, cb) {
+    this.http.patch(this.api_url + 'reset-password', {token: token, password: password}).subscribe(res => {
+      console.log(res);
+      cb(null, res);
+    });
   }
 
   who() {
@@ -80,7 +102,8 @@ export class AuthService {
   }
 
   register(register: Register) {
-    return this.http.put(this.api_url + 'users', register)
+    return this.http.post(this.api_url + 'users', register)
+    
   }
 
   isLoggedIn() {
